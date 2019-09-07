@@ -19,7 +19,9 @@ public abstract class AbstractCounter implements Counter {
 	 * @param nextReactive 
 	 */
 	public AbstractCounter(int countSpace, Direction direction/*, Reactive nextReactive*/) {
-		if (countSpace >= 2) {
+		if (countSpace < 2) {
+			throw new IllegalArgumentException("Count space cannot be less than 2!");
+		} else if (countSpace >= 2) {
 			COUNT_SPACE = countSpace;
 			IS_CIRCULAR = true;
 		} else {
