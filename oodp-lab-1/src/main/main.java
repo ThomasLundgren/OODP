@@ -1,0 +1,14 @@
+package main;
+
+import java.time.LocalTime;
+
+import counter.ClockCounter;
+import counter.ClockCounter.PrintTime;
+
+public class main {
+	
+	public static void main(String[] args) {
+		ClockCounter counter = new ClockCounter();
+		counter.startCount(PrintTime.YES);
+	}
+}

@@ -5,23 +5,21 @@ public abstract class AbstractCounter implements Counter {
 	public enum Direction {INCREASING, DECREASING};
 	protected final boolean IS_CIRCULAR;
 	protected final int COUNT_SPACE;
-	protected int countedValue;
+	protected int countedValue = 0;
 	protected boolean isPaused;
 	protected Direction direction;
-//	protected Reactive nextReactive;
 	
 	/**
-	 * 
 	 * @param countSpace - The amount of counts until the AbstractCounter overflows.
-	 * The AbstractCounter starts at zero and overflows to zero.
+	 * The AbstractCounter starts at zero and overflows to zero if the Direction is set
+	 * to {@link Direction#INCREASING}. For {@link Direction#DECREASING} Counters, the
+	 * Counter starts at the given count space and counts down. It overflows from zero
+	 * back to the count space.
 	 * @param direction - {@link Direction#INCREASING} or {@link Direction#DECREASING} sets
 	 * the direction of the AbstractCounter.
-	 * @param nextReactive 
 	 */
-	public AbstractCounter(int countSpace, Direction direction/*, Reactive nextReactive*/) {
-		if (countSpace < 2) {
-			throw new IllegalArgumentException("Count space cannot be less than 2!");
-		} else if (countSpace >= 2) {
+	public AbstractCounter(int countSpace, Direction direction) {
+		if (countSpace >= 2) {
 			COUNT_SPACE = countSpace;
 			IS_CIRCULAR = true;
 		} else {
@@ -29,7 +27,6 @@ public abstract class AbstractCounter implements Counter {
 			IS_CIRCULAR = false;
 		}
 		this.direction = direction;
-//		this.nextReactive = nextReactive;
 	}
 	
 	@Override
@@ -41,14 +38,20 @@ public abstract class AbstractCounter implements Counter {
 					countedValue = 0;
 				}
 			} else {
-				countedValue--;
-				if (IS_CIRCULAR && countedValue == COUNT_SPACE) {
-					countedValue = 0;
+				if (IS_CIRCULAR && countedValue == 0) {
+					countedValue = COUNT_SPACE - 1;
+				} else {
+					countedValue--;
 				}
+				
 			}
 		}
 	}
 
+	public void setDirection(Direction direction) {
+		this.direction = direction;
+	}
+	
 	@Override
 	public int getCount() {
 		return countedValue;
@@ -57,10 +60,6 @@ public abstract class AbstractCounter implements Counter {
 	@Override
 	public void reset() {
 		countedValue = 0;
-	}
-
-	public void setDirection(Direction direction) {
-		this.direction = direction;
 	}
 
 	@Override
@@ -72,7 +71,7 @@ public abstract class AbstractCounter implements Counter {
 	public void resume() {
 		isPaused = false;
 	}
-
+	
 	@Override
 	public String toString() {
 		return Integer.toString(countedValue);

@@ -11,17 +11,18 @@ import counter.AbstractCounter.Direction;
 class Counter60Test {
 
 	private Counter60 counter60;
+	private Counter24 innerCounter;
 	
 	@BeforeEach
 	void setUp() throws Exception {
-		counter60 = new Counter60();
+		innerCounter = new Counter24();
+		counter60 = new Counter60(innerCounter);
 	}
 
 	@AfterEach
 	void tearDown() throws Exception {
 		counter60 = null;
 	}
-
 
 	@Test
 	void getCount_onNewCounter_shouldReturnZero() {
@@ -45,21 +46,11 @@ class Counter60Test {
 	}
 	
 	@Test
-	void setDirection_decreasingAndCount59Times_shouldReturnMinus59() {
-		counter60.setDirection(Direction.DECREASING);
-		for (int i = 0; i < 59; i++) {
-			counter60.count();
-		}
-		assertEquals(-59, counter60.getCount());
-	}
-	
-	@Test
-	void setDirection_decreasingAndCount60Times_shouldReturnMinus60() {
-		counter60.setDirection(Direction.DECREASING);
+	void getCount_after60Counts_overflowsInnerCounterIs1() {
 		for (int i = 0; i < 60; i++) {
 			counter60.count();
 		}
-		assertEquals(-60, counter60.getCount());
+		assertEquals(1, innerCounter.getCount());
 	}
 	
 	@Test
@@ -86,6 +77,20 @@ class Counter60Test {
 		counter60.resume();
 		counter60.count();
 		assertEquals(1, counter60.getCount());
+	}
+	
+	@Test
+	void setDirection_countDownFromOne_overflowsTo24() {
+		assertEquals(0, counter60.getCount());
+		counter60.count();
+		assertEquals(1, counter60.getCount());
+		counter60.count();
+		assertEquals(2, counter60.getCount());
+		counter60.setDirection(Direction.DECREASING);
+		counter60.count();
+		assertEquals(1, counter60.getCount());
+		counter60.count();
+		assertEquals(60, counter60.getCount());
 	}
 	
 	@Test

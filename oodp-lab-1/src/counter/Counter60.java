@@ -1,9 +1,9 @@
 package counter;
 
-public class Counter60 extends AbstractCounter {
+public class Counter60 extends LinkedAbstractCounter {
 
-	public Counter60() {
-		super(60, Direction.INCREASING);
+	public Counter60(Counter nextCounter) {
+		super(60, Direction.INCREASING, nextCounter);
 	}
 
 }

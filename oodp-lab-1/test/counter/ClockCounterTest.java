@@ -21,8 +21,40 @@ class ClockCounterTest {
 	}
 
 	@Test
-	void test() {
-		fail("Not yet implemented");
+	void getTime_onNewClockCounter_returnsZero() {
+		assertEquals(0, clockCounter.getTime().getSecond());
+		assertEquals(0, clockCounter.getTime().getMinute());
+		assertEquals(0, clockCounter.getTime().getHour());
 	}
-
+	
+	@Test
+	void getTime_after60Counts_returns0H1Min0Sec() {
+		for (int i = 0; i < 60; i++) {
+			clockCounter.count();
+		}
+		assertEquals(0, clockCounter.getTime().getSecond());
+		assertEquals(1, clockCounter.getTime().getMinute());
+		assertEquals(0, clockCounter.getTime().getHour());
+	}
+	
+	@Test
+	void getTime_after3600Counts_returns1H0Min0Sec() {
+		for (int i = 0; i < 3600; i++) {
+			clockCounter.count();
+		}
+		assertEquals(0, clockCounter.getTime().getSecond());
+		assertEquals(0, clockCounter.getTime().getMinute());
+		assertEquals(1, clockCounter.getTime().getHour());
+	}
+	
+	@Test
+	void getTime_after86400Counts_returns0H0Min0Sec() {
+		for (int i = 0; i < 86400; i++) {
+			clockCounter.count();
+		}
+		assertEquals(0, clockCounter.getTime().getSecond());
+		assertEquals(0, clockCounter.getTime().getMinute());
+		assertEquals(0, clockCounter.getTime().getHour());
+	}
+	
 }

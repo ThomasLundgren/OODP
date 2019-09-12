@@ -44,24 +44,6 @@ class Counter24Test {
 	}
 	
 	@Test
-	void setDirection_decreasingAndCount23Times_shouldReturnMinus23() {
-		counter24.setDirection(Direction.DECREASING);
-		for (int i = 0; i < 23; i++) {
-			counter24.count();
-		}
-		assertEquals(-23, counter24.getCount());
-	}
-	
-	@Test
-	void setDirection_decreasingAndCount24Times_shouldReturnMinus24() {
-		counter24.setDirection(Direction.DECREASING);
-		for (int i = 0; i < 24; i++) {
-			counter24.count();
-		}
-		assertEquals(-24, counter24.getCount());
-	}
-	
-	@Test
 	void reset_afterCount_getCountReturnZero() {
 		counter24.count();
 		assertEquals(1, counter24.getCount());
@@ -85,6 +67,18 @@ class Counter24Test {
 		counter24.resume();
 		counter24.count();
 		assertEquals(1, counter24.getCount());
+	}
+	
+	@Test
+	void setDirection_countDownFromZero_overflowsTo23() {
+		assertEquals(0, counter24.getCount());
+		counter24.count();
+		assertEquals(1, counter24.getCount());
+		counter24.setDirection(Direction.DECREASING);
+		counter24.count();
+		assertEquals(0, counter24.getCount());
+		counter24.count();
+		assertEquals(23, counter24.getCount());
 	}
 	
 	@Test

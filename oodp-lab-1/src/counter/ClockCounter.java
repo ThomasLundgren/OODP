@@ -5,39 +5,50 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class ClockCounter {
+
+	private Counter hoursCounter;
+	private Counter secondsCounter;
+	private Counter minutesCounter;
+	private Timer timer;
 	
-	private final Counter secondsCounter = new Counter60(); 
-	private final Counter minutesCounter = new Counter60();
-	private final Counter hoursCounter = new Counter24();
+	public enum PrintTime {YES, NO};
 	
+	public ClockCounter() {
+		hoursCounter = new Counter24();
+		minutesCounter = new Counter60(hoursCounter);
+		secondsCounter = new Counter60(minutesCounter);
+	}
+
 	public void count() {
 		secondsCounter.count();
-		if (secondsCounter.getCount() == 0) {
-			minutesCounter.count();
-			if (minutesCounter.getCount() == 0) {
-				hoursCounter.count();
-			}
-		}
 	}
 	
 	public LocalTime getTime() {
-		return LocalTime.of(hoursCounter.getCount(),
-				minutesCounter.getCount(), secondsCounter.getCount());
+		return LocalTime.of(hoursCounter.getCount(), minutesCounter.getCount(), secondsCounter.getCount());
 	}
 	
-	public void startCount() {
-		new Timer().scheduleAtFixedRate(new TimerTask() {
-			public void run()  {
-				count();
-				System.out.println(getTime().toString());
-			}
+	public void startCount(PrintTime printTime) {
+		if (timer == null) {
+			timer = new Timer();
+			timer.scheduleAtFixedRate(new TimerTask() {
+				public void run()  {
+					count();
+					if (printTime == PrintTime.YES) {
+						System.out.println(getTime().toString());
+					}
+				}
 			}, 0, 1000);
+		}
 	}
 	
-	
-	public static void main(String[] args) {
-		ClockCounter counter = new ClockCounter();
-		counter.startCount();
+	public void stopCount() {
+		timer.cancel();
 	}
 	
+	public void resetClock() {
+		stopCount();
+		hoursCounter = new Counter24();
+		minutesCounter = new Counter60(hoursCounter);
+		secondsCounter = new Counter60(minutesCounter);
+	}
 }
