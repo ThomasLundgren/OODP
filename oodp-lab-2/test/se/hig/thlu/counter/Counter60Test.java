@@ -1,4 +1,4 @@
-package counter;
+package se.hig.thlu.counter;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -6,16 +6,18 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import counter.AbstractCounter.Direction;
+import se.hig.thlu.counter.AbstractCounter.Direction;
 
 class Counter60Test {
 
-	private LinkedAbstractCounter counter60;
-	private Counter innerCounter;
+	private SettableLinkedCounter counter60;
+	private SettableLinkedCounter innerCounter;
+	private SettableCounter innerInnerCounter;
 	
 	@BeforeEach
 	void setUp() throws Exception {
-		innerCounter = new Counter24();
+		innerInnerCounter = new Counter7();
+		innerCounter = new Counter24(innerInnerCounter);
 		counter60 = new Counter60(innerCounter);
 	}
 
@@ -80,17 +82,42 @@ class Counter60Test {
 	}
 	
 	@Test
-	void setDirection_countDownFromOne_overflowsTo24() {
+	void setDirection_countDownFromOne_overflowsTo59() {
 		assertEquals(0, counter60.getCount());
 		counter60.count();
 		assertEquals(1, counter60.getCount());
-		counter60.count();
-		assertEquals(2, counter60.getCount());
 		counter60.setDirection(Direction.DECREASING);
 		counter60.count();
-		assertEquals(1, counter60.getCount());
+		assertEquals(0, counter60.getCount());
 		counter60.count();
-		assertEquals(60, counter60.getCount());
+		assertEquals(59, counter60.getCount());
+	}
+	
+	@Test
+	void setDirection_countDownFromOne_overflowsTo59AndInnerCounterIsOne() {
+		assertEquals(0, counter60.getCount());
+		counter60.count();
+		assertEquals(1, counter60.getCount());
+		counter60.setDirection(Direction.DECREASING);
+		counter60.count();
+		assertEquals(0, counter60.getCount());
+		counter60.count();
+		assertEquals(59, counter60.getCount());
+		assertEquals(1, innerCounter.getCount());
+	}
+	
+	@Test
+	void setCount_setBelowZero_shouldRaiseException() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			counter60.setCount(-1);
+		});
+	}
+	
+	@Test
+	void setCount_setAtCountSpaceLimit_shouldRaiseException() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			counter60.setCount(60);
+		});
 	}
 	
 	@Test

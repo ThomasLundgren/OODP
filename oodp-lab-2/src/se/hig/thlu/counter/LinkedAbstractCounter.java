@@ -1,16 +1,16 @@
-package counter;
+package se.hig.thlu.counter;
 
 import java.util.Objects;
 
 public abstract class LinkedAbstractCounter extends AbstractCounter {
 
-	private final Counter nextCounter;
-	
-	public LinkedAbstractCounter(int countSpace, Direction direction, Counter nextCounter) {
+	private CounterType nextCounter;
+
+	public LinkedAbstractCounter(int countSpace, Direction direction, CounterType nextCounter) {
 		super(countSpace, direction);
 		this.nextCounter = Objects.requireNonNull(nextCounter, "A linked Counter must be linked to another Counter!");
 	}
-	
+
 	@Override
 	public void count() {
 		if (!isPaused) {
@@ -23,12 +23,13 @@ public abstract class LinkedAbstractCounter extends AbstractCounter {
 					}
 				}
 			} else {
-				countedValue--;
 				if (IS_CIRCULAR && countedValue == 0) {
-					countedValue = COUNT_SPACE;
+					countedValue = COUNT_SPACE - 1;
 					if (nextCounter != null) {
 						nextCounter.count();
 					}
+				} else {
+					countedValue--;
 				}
 			}
 		}

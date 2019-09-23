@@ -6,9 +6,9 @@ import java.util.TimerTask;
 
 public class ClockCounter {
 
-	private Counter hoursCounter;
-	private Counter secondsCounter;
-	private Counter minutesCounter;
+	private final Counter hoursCounter;
+	private final Counter secondsCounter;
+	private final Counter minutesCounter;
 	private Timer timer;
 	
 	public enum PrintTime {YES, NO};
@@ -47,8 +47,8 @@ public class ClockCounter {
 	
 	public void resetClock() {
 		stopCount();
-		hoursCounter = new Counter24();
-		minutesCounter = new Counter60(hoursCounter);
-		secondsCounter = new Counter60(minutesCounter);
+		hoursCounter.reset();
+		minutesCounter.reset();
+		secondsCounter.reset();
 	}
 }

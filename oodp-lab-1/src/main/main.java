@@ -3,6 +3,8 @@ package main;
 import java.time.LocalTime;
 
 import counter.ClockCounter;
+import counter.Counter;
+import counter.Counter24;
 import counter.ClockCounter.PrintTime;
 
 public class main {

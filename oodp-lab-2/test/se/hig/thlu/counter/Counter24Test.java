@@ -1,4 +1,4 @@
-package counter;
+package se.hig.thlu.counter;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -6,20 +6,23 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import counter.AbstractCounter.Direction;
+import se.hig.thlu.counter.AbstractCounter.Direction;
 
 class Counter24Test {
 
-	private AbstractCounter counter24;
+	private SettableLinkedCounter counter24;
+	private SettableCounter counter7;
 	
 	@BeforeEach
 	void setUp() throws Exception {
-		counter24 = new Counter24();
+		counter7 = new Counter7();
+		counter24 = new Counter24(counter7);
 	}
 
 	@AfterEach
 	void tearDown() throws Exception {
 		counter24 = null;
+		counter7 = null;
 	}
 
 	@Test
@@ -41,6 +44,14 @@ class Counter24Test {
 			counter24.count();
 		}
 		assertEquals(0, counter24.getCount());
+	}
+	
+	@Test
+	void getCount_after24Counts_shouldOverflowAndCounter7Count() {
+		for (int i = 0; i < 24; i++) {
+			counter24.count();
+		}
+		assertEquals(1, counter7.getCount());
 	}
 	
 	@Test
@@ -79,6 +90,19 @@ class Counter24Test {
 		assertEquals(0, counter24.getCount());
 		counter24.count();
 		assertEquals(23, counter24.getCount());
+	}
+	
+	@Test
+	void setDirection_countDownFromZero_overflowsAndCounter7Count() {
+		assertEquals(0, counter24.getCount());
+		counter24.count();
+		assertEquals(1, counter24.getCount());
+		counter24.setDirection(Direction.DECREASING);
+		counter24.count();
+		assertEquals(0, counter24.getCount());
+		counter24.count();
+		assertEquals(23, counter24.getCount());
+		assertEquals(1, counter7.getCount());
 	}
 	
 	@Test

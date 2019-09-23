@@ -38,8 +38,8 @@ class ClockCounterTest {
 	}
 	
 	@Test
-	void getTime_after3600Counts_returns1H0Min0Sec() {
-		for (int i = 0; i < 3600; i++) {
+	void getTime_afterHourCount_returns1H0Min0Sec() {
+		for (int i = 0; i < 60 * 60; i++) {
 			clockCounter.count();
 		}
 		assertEquals(0, clockCounter.getTime().getSecond());
@@ -48,8 +48,8 @@ class ClockCounterTest {
 	}
 	
 	@Test
-	void getTime_after86400Counts_returns0H0Min0Sec() {
-		for (int i = 0; i < 86400; i++) {
+	void getTime_after24HourCount_returns0H0Min0Sec() {
+		for (int i = 0; i < 24*60*60; i++) {
 			clockCounter.count();
 		}
 		assertEquals(0, clockCounter.getTime().getSecond());
