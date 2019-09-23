@@ -25,7 +25,7 @@ class AlarmManagerTest {
 	private PrintStream printStream;
 	private PrintStream sysOut;
 	private OutputStream outputStream;
-	
+
 	@BeforeEach
 	void setUp() throws Exception {
 		time = new Time(0, 0, 0);
@@ -56,41 +56,41 @@ class AlarmManagerTest {
 			alarmManager.addAlarm(null);
 		});
 	}
-	
+
 	@Test
 	void getAlarms_afterAddAlarm_alarmIsStored() {
 		alarmManager.addAlarm(alarm);
 		assertTrue(alarmManager.getAlarms().contains(alarm));
 	}
-	
+
 	@Test
 	void removeAlarm_afterAddAlarm_removesAlarm() {
 		alarmManager.addAlarm(alarm);
 		alarmManager.removeAlarm(alarm);
 		assertTrue(alarmManager.getAlarms().isEmpty());
 	}
-	
+
 	@Test
 	void removeAlarm_passNull_throwsNpe() {
 		assertThrows(NullPointerException.class, () -> {
 			alarmManager.removeAlarm(null);
 		});
 	}
-	
+
 	@Test
 	void checkForAlarm_passNull_throwsNpe() {
 		assertThrows(NullPointerException.class, () -> {
 			alarmManager.checkForAlarm(null);
 		});
 	}
-	
+
 	@Test
 	void checkForAlarm_passContainingAlarmTime_triggersAlarmAction() {
 		alarmManager.addAlarm(alarm);
 		alarmManager.checkForAlarm(time);
 		assertEquals("Alarm activated!" + System.lineSeparator(), outputStream.toString());
 	}
-	
+
 	@Test
 	void checkForAlarm_passNonContainedAlarmTime_doesNotTriggerAlarmAction() {
 		alarmManager.addAlarm(alarm);
@@ -98,7 +98,7 @@ class AlarmManagerTest {
 		assertTrue(newTime != time);
 		alarmManager.checkForAlarm(newTime);
 		assertFalse(("Alarm activated!" + System.lineSeparator()).equals(outputStream.toString()));
-		
+
 	}
 
 }

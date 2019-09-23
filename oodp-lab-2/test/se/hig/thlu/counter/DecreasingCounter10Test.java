@@ -1,6 +1,6 @@
 package se.hig.thlu.counter;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,9 +9,9 @@ import org.junit.jupiter.api.Test;
 import se.hig.thlu.counter.AbstractCounter.Direction;
 
 class DecreasingCounter10Test {
-	
+
 	private SettableCounter decreasingCounter10;
-	
+
 	@BeforeEach
 	void setUp() throws Exception {
 		decreasingCounter10 = new DecreasingCounter10();
@@ -26,7 +26,7 @@ class DecreasingCounter10Test {
 	void getCount_onNewDecreasingCounter_shouldReturnZero() {
 		assertEquals(0, decreasingCounter10.getCount());
 	}
-	
+
 	@Test
 	void getCount_afterTenCounts_shouldReturnZero() {
 		for (int i = 0; i < 10; i++) {
@@ -34,7 +34,7 @@ class DecreasingCounter10Test {
 		}
 		assertEquals(0, decreasingCounter10.getCount());
 	}
-	
+
 	@Test
 	void getCount_afterElevenCounts_shouldOverflowAndReturnNine() {
 		for (int i = 0; i < 11; i++) {
@@ -50,14 +50,14 @@ class DecreasingCounter10Test {
 		decreasingCounter10.reset();
 		assertEquals(0, decreasingCounter10.getCount());
 	}
-	
+
 	@Test
 	void pause_onCounterAtZero_shouldReturnZero() {
 		decreasingCounter10.pause();
 		decreasingCounter10.count();
 		assertEquals(0, decreasingCounter10.getCount());
 	}
-	
+
 	@Test
 	void resume_afterPausingAtZero_countDecreases() {
 		decreasingCounter10.pause();
@@ -67,7 +67,7 @@ class DecreasingCounter10Test {
 		decreasingCounter10.count();
 		assertEquals(9, decreasingCounter10.getCount());
 	}
-	
+
 	@Test
 	void setDirection_countUpFromNine_overflowsToZero() {
 		assertEquals(0, decreasingCounter10.getCount());
@@ -79,7 +79,7 @@ class DecreasingCounter10Test {
 		decreasingCounter10.count();
 		assertEquals(1, decreasingCounter10.getCount());
 	}
-	
+
 	@Test
 	void toString_onEmptyCounter_returnsString0() {
 		assertEquals("0", decreasingCounter10.toString());

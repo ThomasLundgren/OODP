@@ -1,6 +1,9 @@
 package se.hig.thlu.alarm;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
@@ -21,8 +24,7 @@ class AlarmTest {
 	private PrintStream printStream;
 	private PrintStream sysOut;
 	private OutputStream outputStream;
-	
-	
+
 	@BeforeEach
 	void setUp() throws Exception {
 		time = new Time(1, 0, 0, 0);
@@ -44,7 +46,7 @@ class AlarmTest {
 		System.out.flush();
 		System.setOut(sysOut);
 	}
-	
+
 	@Test
 	void constructor_passNullTimeObject_throwsNpe() {
 		assertThrows(NullPointerException.class, () -> {
@@ -58,18 +60,18 @@ class AlarmTest {
 			new Alarm(time, null);
 		});
 	}
-	
+
 	@Test
 	void isActive_onNewAlarm_returnsTrue() {
 		assertTrue(alarm.isActive());
 	}
-	
+
 	@Test
 	void setActive_onNewAlarm_isActiveFalse() {
 		alarm.setActive(false);
 		assertFalse(alarm.isActive());
 	}
-	
+
 	@Test
 	void getTime_onNewAlarm_returnsMonday0H0m0s() {
 		TimeType newTime = alarm.getTime();
@@ -78,36 +80,33 @@ class AlarmTest {
 		assertEquals(0, newTime.getMinute());
 		assertEquals(0, newTime.getSecond());
 	}
-	
+
 	@Test
 	void getTime_afterSetTime_returnsNewTimeObjectReference() {
 		TimeType newTime = new Time(1, 1, 1);
 		alarm.setTime(newTime);
 		assertEquals(newTime, alarm.getTime());
 	}
-	
+
 	@Test
 	void setTime_passingNullObject_throwsException() {
 		assertThrows(NullPointerException.class, () -> {
 			alarm.setTime(null);
 		});
 	}
-	
+
 	@Test
 	void addAlarmActionHandler_passNullReference_throwsNpe() {
 		assertThrows(NullPointerException.class, () -> {
 			alarm.addAlarmAction(null);
 		});
 	}
-	
+
 	@Test
 	void doAlarm_withPrintAlarmAction_printsAlarmActivatedToSystemOut() {
 		assertTrue(printAlarmAction instanceof PrintAlarmAction);
 		alarm.doAlarm();
 		assertEquals("Alarm activated!" + System.lineSeparator(), outputStream.toString());
 	}
-	
-	
-	
 
 }

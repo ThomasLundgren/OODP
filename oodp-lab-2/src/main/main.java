@@ -9,9 +9,9 @@ import se.hig.thlu.clock.WeekAlarmClock;
 import se.hig.thlu.time.Time;
 
 public class main {
-	
+
 	public static void main(String[] args) {
-		
+
 		AlarmActionType printAlarmAction1 = new PrintAlarmAction();
 		AlarmActionType printAlarmAction2 = new PrintAlarmAction();
 		AlarmType alarm1 = new Alarm(new Time("00:00:05"), printAlarmAction1);
@@ -19,6 +19,6 @@ public class main {
 		WeekAlarmClock alarmClock = new WeekAlarmClock(new Time("00:00:00"), alarm1);
 		alarmClock.addAlarm(alarm2);
 		alarmClock.startClock(PrintTime.YES);
-		
+
 	}
 }

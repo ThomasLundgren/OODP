@@ -23,7 +23,7 @@ public class WeekClock implements ClockType {
 	public WeekClock() {
 		setTime(new Time(0, 0, 0, 0));
 	}
-	
+
 	public WeekClock(TimeType time) {
 		setTime(time);
 

@@ -11,7 +11,7 @@ import se.hig.thlu.time.TimeType;
 public class WeekAlarmClock extends WeekClock implements AlarmClockType {
 
 	private final AlarmManager alarmManager = new AlarmManager();
-		
+
 	public WeekAlarmClock(TimeType time, AlarmType alarm) {
 		super(time);
 		addAlarm(alarm);
