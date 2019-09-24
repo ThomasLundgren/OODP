@@ -11,9 +11,9 @@ import se.hig.thlu.counter.AbstractCounter.Direction;
 
 class Counter60Test {
 
-	private SettableLinkedCounter counter60;
-	private SettableLinkedCounter innerCounter;
-	private SettableCounter innerInnerCounter;
+	private SettableLinkedAbstractCounter counter60;
+	private SettableLinkedAbstractCounter innerCounter;
+	private SettableAbstractCounter innerInnerCounter;
 
 	@BeforeEach
 	void setUp() throws Exception {

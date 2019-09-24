@@ -10,8 +10,8 @@ import se.hig.thlu.counter.AbstractCounter.Direction;
 
 class Counter24Test {
 
-	private SettableLinkedCounter counter24;
-	private SettableCounter counter7;
+	private SettableLinkedAbstractCounter counter24;
+	private SettableAbstractCounter counter7;
 
 	@BeforeEach
 	void setUp() throws Exception {

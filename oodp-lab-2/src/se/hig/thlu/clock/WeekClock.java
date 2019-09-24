@@ -16,9 +16,9 @@ public class WeekClock implements ClockType {
 	protected TimeType time;
 	protected Timer timer;
 	protected final SettableCounterType dayCounter = new Counter7();
-	protected final SettableCounterType hoursCounter = new Counter24(dayCounter);
-	protected final SettableCounterType minutesCounter = new Counter60(hoursCounter);
-	protected final SettableCounterType secondsCounter = new Counter60(minutesCounter);
+	protected final SettableCounterType hourCounter = new Counter24(dayCounter);
+	protected final SettableCounterType minuteCounter = new Counter60(hourCounter);
+	protected final SettableCounterType secondCounter = new Counter60(minuteCounter);
 
 	public WeekClock() {
 		setTime(new Time(0, 0, 0, 0));
@@ -28,18 +28,18 @@ public class WeekClock implements ClockType {
 		setTime(time);
 
 		dayCounter.setCount(time.getDay());
-		hoursCounter.setCount(time.getHour());
-		minutesCounter.setCount(time.getMinute());
-		secondsCounter.setCount(time.getSecond());
+		hourCounter.setCount(time.getHour());
+		minuteCounter.setCount(time.getMinute());
+		secondCounter.setCount(time.getSecond());
 	}
 
 	@Override
 	public void tickTock() {
-		secondsCounter.count();
+		secondCounter.count();
 		time.setDay(dayCounter.getCount());
-		time.setHour(hoursCounter.getCount());
-		time.setMinute(minutesCounter.getCount());
-		time.setSecond(secondsCounter.getCount());
+		time.setHour(hourCounter.getCount());
+		time.setMinute(minuteCounter.getCount());
+		time.setSecond(secondCounter.getCount());
 	}
 
 	@Override
@@ -79,9 +79,9 @@ public class WeekClock implements ClockType {
 	public void resetClock() {
 		stopClock();
 		dayCounter.reset();
-		hoursCounter.reset();
-		minutesCounter.reset();
-		secondsCounter.reset();
+		hourCounter.reset();
+		minuteCounter.reset();
+		secondCounter.reset();
 	}
 
 }

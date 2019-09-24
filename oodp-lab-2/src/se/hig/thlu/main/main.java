@@ -1,4 +1,4 @@
-package main;
+package se.hig.thlu.main;
 
 import se.hig.thlu.alarm.Alarm;
 import se.hig.thlu.alarm.AlarmActionType;

@@ -2,9 +2,9 @@ package se.hig.thlu.counter;
 
 import java.util.Objects;
 
-public class SettableLinkedCounter extends LinkedAbstractCounter implements SettableCounterType {
+abstract class SettableLinkedAbstractCounter extends LinkedAbstractCounter implements SettableCounterType {
 
-	public SettableLinkedCounter(int countSpace, Direction direction, CounterType nextCounter) {
+	public SettableLinkedAbstractCounter(int countSpace, Direction direction, CounterType nextCounter) {
 		super(countSpace, direction, Objects.requireNonNull(nextCounter));
 	}
 

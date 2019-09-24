@@ -10,7 +10,7 @@ import se.hig.thlu.counter.AbstractCounter.Direction;
 
 class DecreasingCounter10Test {
 
-	private SettableCounter decreasingCounter10;
+	private SettableAbstractCounter decreasingCounter10;
 
 	@BeforeEach
 	void setUp() throws Exception {

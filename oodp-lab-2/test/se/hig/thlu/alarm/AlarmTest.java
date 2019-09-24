@@ -33,7 +33,6 @@ class AlarmTest {
 		outputStream = new ByteArrayOutputStream();
 		sysOut = System.out;
 		printStream = new PrintStream(outputStream);
-		System.setOut(printStream);
 	}
 
 	@AfterEach
@@ -67,13 +66,13 @@ class AlarmTest {
 	}
 
 	@Test
-	void setActive_onNewAlarm_isActiveFalse() {
+	void setActive_toFalse_isActiveReturnsFalse() {
 		alarm.setActive(false);
 		assertFalse(alarm.isActive());
 	}
 
 	@Test
-	void getTime_onNewAlarm_returnsMonday0H0m0s() {
+	void getTime_onNewAlarm_returnsTuesday0H0m0s() {
 		TimeType newTime = alarm.getTime();
 		assertEquals(1, newTime.getDay());
 		assertEquals(0, newTime.getHour());
@@ -104,9 +103,19 @@ class AlarmTest {
 
 	@Test
 	void doAlarm_withPrintAlarmAction_printsAlarmActivatedToSystemOut() {
+		System.setOut(printStream);
 		assertTrue(printAlarmAction instanceof PrintAlarmAction);
 		alarm.doAlarm();
 		assertEquals("Alarm activated!" + System.lineSeparator(), outputStream.toString());
+	}
+	
+	@Test
+	void doAlarm_withPrintAlarmActionWhileNotActive_doesNotPrintAlarmActivatedToSystemOut() {
+		alarm.setActive(false);
+		System.setOut(printStream);
+		assertTrue(printAlarmAction instanceof PrintAlarmAction);
+		alarm.doAlarm();
+		assertEquals("", outputStream.toString());
 	}
 
 }

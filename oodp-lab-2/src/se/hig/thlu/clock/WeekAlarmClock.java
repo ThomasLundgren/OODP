@@ -18,8 +18,7 @@ public class WeekAlarmClock extends WeekClock implements AlarmClockType {
 	}
 
 	public WeekAlarmClock(AlarmType alarm) {
-		super(new Time(0, 0, 0, 0));
-		addAlarm(alarm);
+		this(new Time(0, 0, 0, 0), alarm);
 	}
 
 	@Override

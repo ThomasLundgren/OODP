@@ -141,4 +141,32 @@ class TimeTest {
 		timeWithDay.setHour(49);
 		assertEquals(1, timeWithDay.getHour());
 	}
+	
+	@Test
+	void setDay_negativeDay_throwsException() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			timeWithDay.setDay(-1);
+		});
+	}
+	
+	@Test
+	void setHour_negativeHour_throwsException() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			timeWithDay.setHour(-1);
+		});
+	}
+	
+	@Test
+	void setMinute_negativeMinute_throwsException() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			timeWithDay.setMinute(-1);
+		});
+	}
+	
+	@Test
+	void setSecond_negativeSecond_throwsException() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			timeWithDay.setSecond(-1);
+		});
+	}
 }

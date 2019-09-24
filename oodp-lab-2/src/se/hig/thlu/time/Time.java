@@ -5,12 +5,8 @@ import java.util.regex.Pattern;
 
 public class Time implements TimeType {
 
-	public enum WeekDays {
-		MON, TUE, WED, THU, FRI, SAT, SUN
-	};
-
 	private int second, minute, hour, day;
-	private static final String[] dayNames = { "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" };
+	private static final String[] DAY_NAMES = { "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" };
 	private boolean hasDay = false;
 
 	public Time(int hour, int minute, int second) {
@@ -35,8 +31,8 @@ public class Time implements TimeType {
 		Matcher weekDayMatcher = weekDayPattern.matcher(time);
 		if (weekDayMatcher.find()) {
 			String[] parts = time.split(" |:");
-			for (int day = 0; day < dayNames.length; day++)
-				if (dayNames[day].equals(parts[0]))
+			for (int day = 0; day < DAY_NAMES.length; day++)
+				if (DAY_NAMES[day].equals(parts[0]))
 					setDay(day);
 			setHour(Integer.parseInt(parts[1]));
 			setMinute(Integer.parseInt(parts[2]));
@@ -50,49 +46,58 @@ public class Time implements TimeType {
 			throw new RuntimeException("Illegal time format: " + time);
 	}
 
+	@Override
 	public int getSecond() {
 		return second;
 	}
 
+	@Override
 	public void setSecond(int second) {
-		if (!isMoreOrEqualToZero(second)) {
+		if (isNegative(second)) {
 			throw new IllegalArgumentException("Seconds cannot be less than zero!");
 		}
 		this.second = second % 60;
 	}
 
+	@Override
 	public int getMinute() {
 		return minute;
 	}
 
+	@Override
 	public void setMinute(int minute) {
-		if (!isMoreOrEqualToZero(minute)) {
+		if (isNegative(minute)) {
 			throw new IllegalArgumentException("Minutes cannot be less than zero!");
 		}
 		this.minute = minute % 60;
 	}
 
+	@Override
 	public int getHour() {
 		return hour;
 	}
 
+	@Override
 	public void setHour(int hour) {
-		if (!isMoreOrEqualToZero(hour)) {
+		if (isNegative(hour)) {
 			throw new IllegalArgumentException("Hours cannot be less than zero!");
 		}
 		this.hour = hour % 24;
 	}
 
+	@Override
 	public boolean hasDay() {
 		return hasDay;
 	}
 
+	@Override
 	public int getDay() {
 		return day;
 	}
 
+	@Override
 	public void setDay(int day) {
-		if (!isMoreOrEqualToZero(day)) {
+		if (isNegative(day)) {
 			throw new IllegalArgumentException("Day cannot be less than zero!");
 		}
 		this.day = day % 7;
@@ -116,11 +121,12 @@ public class Time implements TimeType {
 		}
 	}
 
+	@Override
 	public String toString() {
 		char[] array = new char[12];
-		array[0] = dayNames[day].charAt(0);
-		array[1] = dayNames[day].charAt(1);
-		array[2] = dayNames[day].charAt(2);
+		array[0] = DAY_NAMES[day].charAt(0);
+		array[1] = DAY_NAMES[day].charAt(1);
+		array[2] = DAY_NAMES[day].charAt(2);
 		array[3] = ' ';
 		array[4] = (char) ('0' + hour / 10);
 		array[5] = (char) ('0' + hour % 10);
@@ -150,8 +156,8 @@ public class Time implements TimeType {
 		// second);
 	}
 
-	private boolean isMoreOrEqualToZero(int number) {
-		return number >= 0;
+	private boolean isNegative(int number) {
+		return number < 0;
 	}
 
 }
