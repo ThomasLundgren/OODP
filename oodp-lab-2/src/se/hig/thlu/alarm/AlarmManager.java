@@ -2,12 +2,13 @@ package se.hig.thlu.alarm;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import se.hig.thlu.time.TimeType;
 
 public class AlarmManager {
-	private HashMap<String, AlarmType> map = new HashMap<String, AlarmType>();
+	private Map<String, AlarmType> map = new HashMap<String, AlarmType>();
 
 	public void addAlarm(AlarmType alarm) {
 		Objects.requireNonNull(alarm, "Alarm cannot be null.");

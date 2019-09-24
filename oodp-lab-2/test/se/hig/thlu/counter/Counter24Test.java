@@ -44,7 +44,7 @@ class Counter24Test {
 			counter24.count();
 		}
 		assertEquals(0, counter24.getCount());
-	}
+	}	
 
 	@Test
 	void getCount_after24Counts_shouldOverflowAndCounter7Count() {
@@ -52,6 +52,16 @@ class Counter24Test {
 			counter24.count();
 		}
 		assertEquals(1, counter7.getCount());
+	}
+	
+	@Test
+	void getCount_after24Counts_shouldOverflowAndCounter7OverflowToZero() {
+		counter7.setCount(6);
+		assertEquals(6, counter7.getCount());
+		for (int i = 0; i < 24; i++) {
+			counter24.count();
+		}
+		assertEquals(0, counter7.getCount());
 	}
 
 	@Test

@@ -25,9 +25,7 @@ public abstract class LinkedAbstractCounter extends AbstractCounter {
 			} else {
 				if (IS_CIRCULAR && countedValue == 0) {
 					countedValue = COUNT_SPACE - 1;
-					if (nextCounter != null) {
-						nextCounter.count();
-					}
+					nextCounter.count();
 				} else {
 					countedValue--;
 				}

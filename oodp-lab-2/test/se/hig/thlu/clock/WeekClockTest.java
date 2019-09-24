@@ -64,5 +64,15 @@ class WeekClockTest {
 		weekClock.setTime(newTime);
 		assertEquals(newTime, weekClock.getTime());
 	}
+	
+	@Test
+	void tickTock_onClockAtMon23H59m59s_getTimeShowsTue0H0m0s() {
+		weekClock.setTime(new Time(0, 23, 59, 59));
+		assertEquals("Mon 23:59:59", weekClock.getTime().toString());
+		System.out.println(weekClock.getTime().toString());
+		weekClock.tickTock();
+//		assertEquals("Tue 00:00:00", weekClock.getTime().toString());
+		System.out.println(weekClock.getTime().toString());
+	}
 
 }
