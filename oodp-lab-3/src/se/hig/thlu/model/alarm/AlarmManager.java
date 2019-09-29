@@ -1,11 +1,11 @@
-package se.hig.thlu.alarm;
+package se.hig.thlu.model.alarm;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import se.hig.thlu.time.TimeType;
+import se.hig.thlu.model.time.TimeType;
 
 public class AlarmManager {
 	private Map<String, AlarmType> map = new HashMap<String, AlarmType>();
@@ -13,7 +13,6 @@ public class AlarmManager {
 	public void addAlarm(AlarmType alarm) {
 		Objects.requireNonNull(alarm, "Alarm cannot be null.");
 		map.put(alarm.toString(), alarm);
-		System.out.println(alarm.toString());
 	}
 
 	public void removeAlarm(AlarmType alarm) {
@@ -25,11 +24,16 @@ public class AlarmManager {
 		return map.values();
 	}
 
+	public AlarmType getAlarm(AlarmType alarm) {
+		return map.get(alarm.getTime().toString());
+	}
+	
 	public void checkForAlarm(TimeType time) {
 		Objects.requireNonNull(time, "Time cannot be null.");
 		AlarmType alarm = map.get(time.toString());
 		if (alarm != null && alarm.isActive()) {
 			alarm.doAlarm();
+			System.out.println(alarm.toString());
 		}
 			
 	}

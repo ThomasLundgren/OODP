@@ -1,5 +1,7 @@
 package se.hig.thlu.clock;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -13,6 +15,8 @@ import se.hig.thlu.time.TimeType;
 
 public class WeekClock implements ClockType {
 
+	public static final String TIME_PROPERTY = "TIME";
+	protected PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 	protected TimeType time;
 	protected Timer timer;
 	protected final SettableCounterType dayCounter = new Counter7();
@@ -36,10 +40,12 @@ public class WeekClock implements ClockType {
 	@Override
 	public void tickTock() {
 		secondCounter.count();
+		TimeType oldTime = new Time(time.toString());
 		time.setDay(dayCounter.getCount());
 		time.setHour(hourCounter.getCount());
 		time.setMinute(minuteCounter.getCount());
 		time.setSecond(secondCounter.getCount());
+		propertyChangeSupport.firePropertyChange(TIME_PROPERTY, oldTime, time);
 	}
 
 	@Override
@@ -84,4 +90,11 @@ public class WeekClock implements ClockType {
 		secondCounter.reset();
 	}
 
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		propertyChangeSupport.addPropertyChangeListener(listener);
+	}
+	
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		propertyChangeSupport.removePropertyChangeListener(listener);
+	}
 }

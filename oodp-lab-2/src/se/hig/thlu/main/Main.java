@@ -1,12 +1,5 @@
 package se.hig.thlu.main;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
 import se.hig.thlu.alarm.Alarm;
 import se.hig.thlu.alarm.AlarmActionType;
 import se.hig.thlu.alarm.AlarmType;
@@ -14,7 +7,6 @@ import se.hig.thlu.alarm.PrintAlarmAction;
 import se.hig.thlu.clock.PrintTime;
 import se.hig.thlu.clock.WeekAlarmClock;
 import se.hig.thlu.time.Time;
-import se.hig.thlu.time.TimeType;
 
 public class Main {
 	
