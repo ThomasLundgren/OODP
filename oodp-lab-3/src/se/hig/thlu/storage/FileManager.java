@@ -16,8 +16,8 @@ public class FileManager {
 	private static FileManager INSTANCE;
 
 	public enum FilePath {
-		ALARM_CLIP("se/hig/thlu/resources/audio/alarm.wav"),
-		DIGITAL_7_FONT("se/hig/thlu/resources/digital-7.tff");
+		ALARM_CLIP("/se/hig/thlu/resources/audio/alarm.wav"),
+		DIGITAL_7_FONT("/se/hig/thlu/resources/digital-7.tff");
 
 		private final String filePath;
 
@@ -45,7 +45,6 @@ public class FileManager {
 	public Clip getClip(FilePath clipFilePath) {
 		Clip clip = null;
 		try {
-			System.out.println(clipFilePath.toString());
 			AudioInputStream inputStream = AudioSystem
 					.getAudioInputStream(getClass().getResource(clipFilePath.toString()));
 			clip = AudioSystem.getClip();
