@@ -59,18 +59,18 @@ public class FileManager {
 		return clip;
 	}
 	
-//	public Font getFont(FilePath fontFilePath) {
-//		Font font = null;
-//		try {
-//			System.out.println(this.getClass().getClassLoader().getResourceAsStream(fontFilePath.toString()));
-//			font = Font.createFont(Font.TRUETYPE_FONT, this.getClass().getClassLoader().getResourceAsStream(fontFilePath.toString()));
-//			font = font.deriveFont(Font.BOLD, 28);
-//			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-//			ge.registerFont(font);
-//		} catch (FontFormatException | IOException e) {
-//			e.printStackTrace();
-//		}
-//		return font;
-//	}
+	public Font getFont(FilePath fontFilePath) {
+		Font font = null;
+		try {
+			System.out.println(this.getClass().getResource(fontFilePath.toString()));
+			font = Font.createFont(Font.TRUETYPE_FONT, this.getClass().getClassLoader().getResourceAsStream(fontFilePath.toString()));
+			font = font.deriveFont(Font.BOLD, 28);
+			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			ge.registerFont(font);
+		} catch (FontFormatException | IOException e) {
+			e.printStackTrace();
+		}
+		return font;
+	}
 
 }

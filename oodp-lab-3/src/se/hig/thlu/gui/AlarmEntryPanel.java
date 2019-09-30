@@ -5,12 +5,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Iterator;
 
-import javax.sound.sampled.Clip;
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.Timer;
 
 import se.hig.thlu.model.PropertyChangeBroadcaster;
 import se.hig.thlu.model.alarm.AlarmActionType;
@@ -18,23 +15,13 @@ import se.hig.thlu.model.alarm.AlarmType;
 import se.hig.thlu.model.alarm.BlinkAlarmAction;
 import se.hig.thlu.model.alarm.SoundAlarmAction;
 import se.hig.thlu.model.time.TimeType;
-import se.hig.thlu.storage.FileManager;
-import se.hig.thlu.storage.FileManager.FilePath;
 
 @SuppressWarnings("serial")
 class AlarmEntryPanel extends JPanel implements PropertyChangeBroadcaster, PropertyChangeListener {
-
-	/*
-	 * TODO: Extract GUI alarm actions to own classes.
-	 * Methods: start(), stop()
-	 */
 	
 	public static final String REMOVE_ALARM_ENTRY = "REMOVE ALARM ENTRY";
-	private Timer blinkTimer;
-	private Clip alarmClip;
 	private final AlarmType alarm;
 	private final TimeType alarmTime;
-	private final FileManager fileManager = FileManager.getInstance();
 	private final JButton alarmActiveButton = new JButton("Active");
 	private final JButton removeAlarmButton = new JButton("Remove");
 	private final JButton soundButton = new JButton();
@@ -43,6 +30,8 @@ class AlarmEntryPanel extends JPanel implements PropertyChangeBroadcaster, Prope
 	private final JLabel hourLabel;
 	private final JLabel minuteLabel;
 	private final JLabel secondLabel;
+	private final GuiBlinkAlarmAction blinkAction;
+	private final GuiSoundAlarmAction soundAction;
 	
 	
 	AlarmEntryPanel(AlarmType alarm) {
@@ -54,6 +43,9 @@ class AlarmEntryPanel extends JPanel implements PropertyChangeBroadcaster, Prope
 		minuteLabel = new JLabel(Integer.toString(alarmTime.getMinute()));
 		secondLabel = new JLabel(Integer.toString(alarmTime.getSecond()));
 		
+		blinkAction = new GuiBlinkAlarmAction(this);
+		soundAction = new GuiSoundAlarmAction(this);
+		
 		setUpComponents();
 	}
 
@@ -62,26 +54,26 @@ class AlarmEntryPanel extends JPanel implements PropertyChangeBroadcaster, Prope
 		if (propertyChange.getPropertyName() == BlinkAlarmAction.BLINK_ALARM_ACTIVATED) {
 			System.out.println("AlarmEntryPanel reacted to blink alarm activation");
 			if ((boolean) propertyChange.getNewValue() == true) {
-				startBlinkTimer();
+				blinkAction.startBlinking();
 			}
 			if ((boolean) propertyChange.getNewValue() == false) {
-				stopBlinking();
+				blinkAction.stopBlinking();
 			}
 		}
 		if (propertyChange.getPropertyName() == SoundAlarmAction.SOUND_ALARM_ACTIVATED) {
 			System.out.println("AlarmEntryPanel reacted to sound alarm activation");
 			if ((boolean) propertyChange.getNewValue() == true) {
-				startAlarmSound();
+				soundAction.startAlarmSound();
 			}
 			if ((boolean) propertyChange.getNewValue() == false) {
-				stopAlarmSound();
+				soundAction.stopAlarmSound();
 			}
 		}
 	}
 	
 	public void stopAlarmSignals() {
-		stopBlinking();
-		stopAlarmSound();
+		blinkAction.stopBlinking();
+		soundAction.stopAlarmSound();
 	}
 
 	AlarmType getAlarm() {
@@ -127,7 +119,7 @@ class AlarmEntryPanel extends JPanel implements PropertyChangeBroadcaster, Prope
 				soundButton.setText("Sound inactive");
 				soundButton.setBackground(Color.RED);
 				Iterator<AlarmActionType> iterator = alarm.getAlarmActions().iterator();
-				stopAlarmSound();
+				soundAction.stopAlarmSound();
 				while (iterator.hasNext()) {
 					AlarmActionType alarmAction = iterator.next();
 					if (alarmAction instanceof SoundAlarmAction) {
@@ -147,7 +139,7 @@ class AlarmEntryPanel extends JPanel implements PropertyChangeBroadcaster, Prope
 				blinkButton.setText("Blink inactive");
 				blinkButton.setBackground(Color.RED);
 				Iterator<AlarmActionType> iterator = alarm.getAlarmActions().iterator();
-				stopBlinking();
+				blinkAction.stopBlinking();
 				while (iterator.hasNext()) {
 					AlarmActionType alarmAction = iterator.next();
 					if (alarmAction instanceof BlinkAlarmAction) {
@@ -184,42 +176,4 @@ class AlarmEntryPanel extends JPanel implements PropertyChangeBroadcaster, Prope
 		add(soundButton);
 		add(removeAlarmButton);
 	}
-	
-	private void startBlinkTimer() {
-		blinkTimer = new Timer(500, event -> {
-			if (getBackground() == Color.RED) {
-				setBackground(Color.WHITE);
-			} else {
-				setBackground(Color.RED);
-				System.out.println("Blinking!");
-			}
-		});
-		blinkTimer.start();
-	}
-	
-	private void startAlarmSound() {
-		if (alarmClip == null) {
-			alarmClip = fileManager.getClip(FilePath.ALARM_CLIP);
-			alarmClip.setLoopPoints(0, -1);
-			alarmClip.loop(Clip.LOOP_CONTINUOUSLY);
-			setBorder(BorderFactory.createLineBorder(Color.RED));
-		}
-	}
-
-	private void stopAlarmSound() {
-		if (alarmClip != null) {
-			if (alarmClip.isActive()) {
-				alarmClip.stop();
-				setBorder(BorderFactory.createEmptyBorder());
-			}
-		}
-	}
-
-	private void stopBlinking() {
-		if (blinkTimer != null && blinkTimer.isRunning()) {
-			blinkTimer.stop();
-			setBackground(Color.WHITE);
-		}
-	}
-
 }
