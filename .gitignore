@@ -3,3 +3,6 @@
 *.zip
 /**/documentation
 **.zip*
+**.classpath*
+**.settings*
+**.pdf*
