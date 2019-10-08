@@ -1,4 +1,4 @@
-package se.hig.thlu.controller;
+package se.hig.thlu.control;
 
 import java.beans.PropertyChangeListener;
 import java.time.LocalDateTime;
@@ -16,6 +16,8 @@ import se.hig.thlu.model.clock.AlarmClockType;
 import se.hig.thlu.model.clock.WeekAlarmClock;
 import se.hig.thlu.model.time.Time;
 import se.hig.thlu.model.time.TimeType;
+import se.hig.thlu.storage.AlarmDao;
+import se.hig.thlu.storage.Dao;
 
 public class ClockController {
 
@@ -24,6 +26,7 @@ public class ClockController {
 	}
 
 	private final AlarmClockType clock = new WeekAlarmClock();
+	private final Dao<AlarmType> alarmDao = new AlarmDao();
 	
 	public ClockController() {
 		clock.setTime(getCurrentSystemTime());
@@ -69,6 +72,10 @@ public class ClockController {
 		});
 		clock.addAlarm(alarm);
 		System.out.println("Alarm active? " + alarm.isActive());
+	}
+	
+	public void addAlarm(AlarmType alarm) {
+		clock.addAlarm(alarm);
 	}
 
 	public Collection<AlarmType> getAlarms() {
@@ -139,5 +146,13 @@ public class ClockController {
 		default:
 			return null;
 		}
+	}
+	
+	public Collection<AlarmType> getStoredAlarms() {
+		return alarmDao.getAll();
+	}
+	
+	public void storeAlarms() {
+		alarmDao.saveAll(clock.getAlarms());
 	}
 }
