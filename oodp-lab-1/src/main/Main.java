@@ -7,7 +7,7 @@ import counter.Counter;
 import counter.Counter24;
 import counter.ClockCounter.PrintTime;
 
-public class main {
+public class Main {
 	
 	public static void main(String[] args) {
 		ClockCounter counter = new ClockCounter();
