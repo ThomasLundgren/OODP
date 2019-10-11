@@ -7,6 +7,7 @@ import se.hig.thlu.view.Gui;
 public class Main {
 
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> new Gui());
+		Gui gui = new Gui();
+		SwingUtilities.invokeLater(() -> gui.run());
 	}
 }

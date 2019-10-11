@@ -11,19 +11,20 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import se.hig.thlu.control.ClockController;
+import se.hig.thlu.controller.ClockController;
 import se.hig.thlu.model.alarm.AlarmType;
 
-public class Gui {
+public class Gui implements Runnable {
 	
-	private final JFrame frame = new JFrame("Clock app");
+	private final JFrame frame = new JFrame("AlarmClock app");
 	private final ClockController clockController = new ClockController();
 	private final AlarmPanel alarmPanel = new AlarmPanel(clockController);
 	private final ControlPanel controlPanel = new ControlPanel(clockController);
 	private final ClockPanel clockPanel = new ClockPanel(clockController);
 	private final GridBagConstraints c = new GridBagConstraints();
 	
-	public Gui() {
+	@Override
+	public void run() {
 		try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
@@ -31,7 +32,6 @@ public class Gui {
         }
 		configureFrame();
 		addListeners();
-		clockController.setToCurrentSystemTime();
 		configureComponents();
 		addComponents();
 		

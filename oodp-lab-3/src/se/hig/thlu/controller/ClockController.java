@@ -26,7 +26,7 @@ public class ClockController {
 	private final AlarmClockType clock = new WeekAlarmClock();
 	
 	public ClockController() {
-		clock.setTime(getCurrentSystemTime());
+		setToCurrentSystemTime();
 	}
 
 	public void addListenerForClock(PropertyChangeListener listener) {
@@ -71,6 +71,10 @@ public class ClockController {
 		System.out.println("Alarm active? " + alarm.isActive());
 	}
 
+	public void addAlarm(AlarmType alarm) {
+		clock.addAlarm(alarm);
+	}
+	
 	public Collection<AlarmType> getAlarms() {
 		return clock.getAlarms();
 	}

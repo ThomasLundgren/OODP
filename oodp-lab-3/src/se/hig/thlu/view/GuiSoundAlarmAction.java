@@ -1,35 +1,28 @@
 package se.hig.thlu.view;
 
-import java.awt.Color;
-
 import javax.sound.sampled.Clip;
-import javax.swing.BorderFactory;
-import javax.swing.JComponent;
 
 import se.hig.thlu.storage.FileManager;
-import se.hig.thlu.storage.FileManager.FilePath;
 
-public class GuiSoundAlarmAction {
+public class GuiSoundAlarmAction implements GuiAlarmAction {
 	
-	private final JComponent component;
 	private final Clip alarmClip;
 	
-	public GuiSoundAlarmAction(JComponent component) {
-		this.component = component;
-		alarmClip = FileManager.getInstance().getClip(FilePath.ALARM_CLIP);
+	public GuiSoundAlarmAction() {
+		alarmClip = FileManager.getInstance().getClip();
 		alarmClip.setLoopPoints(0, -1);
 	}
 	
-	public void startAlarmSound() {
+	@Override
+	public void start() {
 		alarmClip.loop(Clip.LOOP_CONTINUOUSLY);
-		component.setBorder(BorderFactory.createLineBorder(Color.RED));
 	}
 
-	public void stopAlarmSound() {
+	@Override
+	public void stop() {
 		if (alarmClip != null) {
 			if (alarmClip.isActive()) {
 				alarmClip.stop();
-				component.setBorder(BorderFactory.createEmptyBorder());
 			}
 		}
 	}

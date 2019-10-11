@@ -19,26 +19,10 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class FileManager {
 
+	public static final String ALARM_CLIP = "/se/hig/thlu/resources/audio/alarm.wav";
+	public static final String ALARM_STORE_TXT = System.getProperty("user.dir") + "/src/se/hig/thlu/storage/alarms.txt";
 	private static FileManager INSTANCE;
-	private static Path TXT_FILE_PATH = Paths.get(FilePath.ALARM_STORE_TXT.toString());
-
-	public enum FilePath {
-		ALARM_CLIP("/se/hig/thlu/resources/audio/alarm.wav"),
-		DIGITAL_7_FONT("/se/hig/thlu/resources/font/digital-7.tff"),
-		ALARM_STORE_TXT(System.getProperty("user.dir") + "/src/se/hig/thlu/storage/alarms.txt");
-
-		private final String filePath;
-
-		FilePath(final String filePath) {
-			this.filePath = filePath;
-		}
-
-		@Override
-		public String toString() {
-			return filePath;
-		}
-
-	}
+	private static Path TXT_FILE_PATH = Paths.get(ALARM_STORE_TXT);
 
 	private FileManager() {
 	}
@@ -51,7 +35,6 @@ public class FileManager {
 	}
 
 	public void storeTxt(Collection<String> text) throws IOException {
-		System.out.println(TXT_FILE_PATH.toAbsolutePath());
 		BufferedWriter writer = Files.newBufferedWriter(TXT_FILE_PATH, StandardCharsets.UTF_8, StandardOpenOption.WRITE,
 				StandardOpenOption.TRUNCATE_EXISTING);
 		for (String str : text) {
@@ -71,18 +54,18 @@ public class FileManager {
 		return data;
 	}
 
-	public Clip getClip(FilePath clipFilePath) {
+	public Clip getClip() {
 		Clip clip = null;
 		try {
 			AudioInputStream inputStream = AudioSystem
-					.getAudioInputStream(getClass().getResource(clipFilePath.toString()));
+					.getAudioInputStream(getClass().getResource(ALARM_CLIP));
 			clip = AudioSystem.getClip();
 			clip.open(inputStream);
 		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
 			e.printStackTrace();
 		}
 		if (clip == null) {
-			throw new RuntimeException("Could not retrieve Clip!");
+			throw new NullPointerException("Could not retrieve Clip!");
 		}
 		return clip;
 	}

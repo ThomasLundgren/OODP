@@ -23,7 +23,7 @@ public class ClockPanel extends JPanel {
 
 	public ClockPanel(ClockController clockController) {
 		this.clockController = clockController;
-		configureComponents();
+		configureAndAddComponents();
 		addListeners();
 	}
 
@@ -32,7 +32,7 @@ public class ClockPanel extends JPanel {
 		clockController.addListenerForClock(analogClock);
 	}
 
-	private void configureComponents() {
+	private void configureAndAddComponents() {
 		CompoundBorder border = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 1, 0, 0),
 				BorderFactory.createLineBorder(Color.BLACK));
 		setBorder(border);
@@ -46,7 +46,6 @@ public class ClockPanel extends JPanel {
 		clockContainer.add(digitalClock, gbc);
 		clockContainer.add(analogClock, gbc);
 		// add components
-//		setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;

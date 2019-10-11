@@ -19,47 +19,52 @@ public class AnalogClockFace extends ClockFace {
 		double seconds = (double) newTime.getSecond();
 		double minutes = (double) newTime.getMinute();
 		double hours = (double) newTime.getHour();
-		secondHandAngle = ((seconds*0.75)/60)*2*Math.PI;
-		minuteHandAngle = ((minutes*0.75)/60)*2*Math.PI;
-		hourHandAngle = ((hours*0.75)/24)*2*Math.PI;
+		secondHandAngle = ((seconds-15)/60)*2*Math.PI;	// subtract one fourth to make the angle start at s = 0
+		minuteHandAngle = ((minutes-15)/60)*2*Math.PI;	// subtract one fourth to make the angle start at m = 0
+		hourHandAngle = ((hours-9)/24)*2*Math.PI;		// subtract one fourth to make the angle start at h = 0
 		repaint();
 	}
 
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+
 		int min = Math.min(getWidth(), getHeight());
-		int width = min, height = min;
+		int x = min / 2;
+		int y = min / 2;
+		int xCenter = getWidth()/2;
+		int displacement = min/2;
+		int leftEdge = xCenter - displacement;
+		int rightEdge = xCenter + displacement;
+		int quarterLineLength = min/15;
 		
-		int x = width / 2;
-		int y = height / 2;
 		g.setColor(Color.white);
-		g.drawLine(width, y, width - width/15, y); 		// draw line at 3 o'clock
-		g.drawLine(x, height, x, height - height/15); 	// draw line at 6 o'clock
-		g.drawLine(0, y, width/15, y); 					// draw line at 9 o'clock
-		g.drawLine(x, 0, x, height/15);					// draw line at 12 o'clock
-		g.drawOval(getWidth()/2 - width/2, 0, width, height);
-		drawSecondHand(g, x, y);
-		drawMinuteHand(g, x, y);
-		drawHourHand(g, x, y);
+		g.drawOval(leftEdge, 0, min, min);
+		g.drawLine(rightEdge, y, rightEdge - quarterLineLength, y); // draw line at 3 o'clock
+		g.drawLine(xCenter, min, xCenter, min - quarterLineLength); // draw line at 6 o'clock
+		g.drawLine(leftEdge, y, leftEdge + quarterLineLength, y); 	// draw line at 9 o'clock
+		g.drawLine(xCenter, 0, xCenter, quarterLineLength);			// draw line at 12 o'clock
+		drawSecondHand(g, xCenter, x, y);
+		drawMinuteHand(g, xCenter, x, y);
+		drawHourHand(g, xCenter, x, y);
 	}
 
-	private void drawSecondHand(Graphics g, int x, int y) {
+	private void drawSecondHand(Graphics g, int xCenter, int x, int y) {
 		double yp = Math.sin(secondHandAngle);
 		double xp = Math.cos(secondHandAngle);
-		g.drawLine(x, y, x + (int) (xp*x), y + (int) (yp*y));
+		g.drawLine(xCenter, y, xCenter + (int) (xp*x), y + (int) (yp*y));
 	}
 	
-	private void drawMinuteHand(Graphics g, int x, int y) {
+	private void drawMinuteHand(Graphics g, int xCenter, int x, int y) {
 		double yp = Math.sin(minuteHandAngle);
 		double xp = Math.cos(minuteHandAngle);
-		g.drawLine(x, y, x + (int) (xp*x*0.9), y + (int) (yp*y*0.9));
+		g.drawLine(xCenter, y, xCenter + (int) (xp*x*0.9), y + (int) (yp*y*0.9));
 	}
 	
-	private void drawHourHand(Graphics g, int x, int y) {
+	private void drawHourHand(Graphics g, int xCenter, int x, int y) {
 		double yp = Math.sin(hourHandAngle);
 		double xp = Math.cos(hourHandAngle);
-		g.drawLine(x, y, x + (int) (xp*x*0.7), y + (int) (yp*y*0.7)); // TODO: change length of hand
+		g.drawLine(xCenter, y, xCenter + (int) (xp*x*0.7), y + (int) (yp*y*0.7));
 	}
 
 }

@@ -13,8 +13,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
-import se.hig.thlu.control.ClockController;
-import se.hig.thlu.control.ClockController.AlarmActions;
+import se.hig.thlu.controller.ClockController;
+import se.hig.thlu.controller.ClockController.AlarmActions;
 import se.hig.thlu.model.alarm.AlarmActionType;
 import se.hig.thlu.model.alarm.AlarmType;
 import se.hig.thlu.model.alarm.BlinkAlarmAction;
@@ -57,7 +57,6 @@ public class AlarmPanel extends JPanel implements PropertyChangeListener {
 
 			add(newAlarmPanel);
 			alarmEntries.add(newAlarmPanel);
-			System.out.println("Alarm was added and AlarmPanel created and added an AlarmEntry!");
 		}
 		if (propertyChange.getPropertyName() == AlarmEntryPanel.REMOVE_ALARM_ENTRY) {
 			AlarmEntryPanel alarmEntry = (AlarmEntryPanel) propertyChange.getNewValue();

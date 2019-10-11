@@ -76,7 +76,6 @@ public class ControlPanel extends JPanel {
 				if (alarmStr.equals(BLINKING)) {
 					alarmActions.add(AlarmActions.BLINKING);
 				} else if (alarmStr.equals(SOUND)) {
-					System.out.println("SoundAlarmAction added to alarm");
 					alarmActions.add(AlarmActions.SOUND);
 				} else if (alarmStr.equals(BLINKING_AND_SOUND)) {
 					alarmActions.add(AlarmActions.BLINKING);

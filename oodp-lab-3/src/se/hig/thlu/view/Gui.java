@@ -10,24 +10,24 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import se.hig.thlu.controller.ClockController;
 
-public class Gui {
+public class Gui implements Runnable {
 	
-	private final JFrame frame = new JFrame("Clock app");
+	private final JFrame frame = new JFrame("AlarmClock app");
 	private final ClockController clockController = new ClockController();
 	private final AlarmPanel alarmPanel = new AlarmPanel(clockController);
 	private final ControlPanel controlPanel = new ControlPanel(clockController);
 	private final ClockPanel clockPanel = new ClockPanel(clockController);
 	private final GridBagConstraints c = new GridBagConstraints();
 	
-	public Gui() {
+	@Override
+	public void run() {
 		try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
         	System.out.println("Could not set look&feel!");
         }
 		configureFrame();
-		addClockListeners();
-		clockController.setToCurrentSystemTime();
+		addListeners();
 		configureComponents();
 		addComponents();
 		
@@ -67,7 +67,7 @@ public class Gui {
 		frame.add(alarmPanel, c);
 	}
 
-	private void addClockListeners() {
+	private void addListeners() {
 		clockController.addListenerForClock(alarmPanel);
 	}
 

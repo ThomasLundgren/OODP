@@ -14,8 +14,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
-import se.hig.thlu.control.ClockController;
-import se.hig.thlu.control.ClockController.AlarmActions;
+import se.hig.thlu.controller.ClockController;
+import se.hig.thlu.controller.ClockController.AlarmActions;
 import se.hig.thlu.model.time.Time;
 import se.hig.thlu.model.time.TimeType;
 import se.hig.thlu.util.ArrayFiller;
@@ -76,7 +76,6 @@ public class ControlPanel extends JPanel {
 				if (alarmStr.equals(BLINKING)) {
 					alarmActions.add(AlarmActions.BLINKING);
 				} else if (alarmStr.equals(SOUND)) {
-					System.out.println("SoundAlarmAction added to alarm");
 					alarmActions.add(AlarmActions.SOUND);
 				} else if (alarmStr.equals(BLINKING_AND_SOUND)) {
 					alarmActions.add(AlarmActions.BLINKING);

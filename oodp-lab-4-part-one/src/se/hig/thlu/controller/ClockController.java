@@ -1,4 +1,4 @@
-package se.hig.thlu.control;
+package se.hig.thlu.controller;
 
 import java.beans.PropertyChangeListener;
 import java.time.LocalDateTime;
@@ -29,7 +29,7 @@ public class ClockController {
 	private final Dao<AlarmType> alarmDao = new AlarmDao();
 	
 	public ClockController() {
-		clock.setTime(getCurrentSystemTime());
+		setToCurrentSystemTime();
 	}
 
 	public void addListenerForClock(PropertyChangeListener listener) {
@@ -137,6 +137,14 @@ public class ClockController {
 		}
 	}
 	
+	public Collection<AlarmType> getStoredAlarms() {
+		return alarmDao.getAll();
+	}
+	
+	public void storeAlarms() {
+		alarmDao.saveAll(clock.getAlarms());
+	}
+	
 	private AlarmActionType createAlarmAction(AlarmActions alarmAction) {
 		switch (alarmAction) {
 		case BLINKING:
@@ -146,13 +154,5 @@ public class ClockController {
 		default:
 			return null;
 		}
-	}
-	
-	public Collection<AlarmType> getStoredAlarms() {
-		return alarmDao.getAll();
-	}
-	
-	public void storeAlarms() {
-		alarmDao.saveAll(clock.getAlarms());
 	}
 }

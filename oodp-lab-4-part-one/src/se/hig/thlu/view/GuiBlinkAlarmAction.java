@@ -5,7 +5,7 @@ import java.awt.Color;
 import javax.swing.JComponent;
 import javax.swing.Timer;
 
-public class GuiBlinkAlarmAction {
+public class GuiBlinkAlarmAction implements GuiAlarmAction {
 	
 	private final Timer blinkTimer;
 	private final JComponent component;
@@ -23,11 +23,13 @@ public class GuiBlinkAlarmAction {
 		});
 	}
 	
-	public void startBlinking() {
+	@Override
+	public void start() {
 		blinkTimer.start();
 	}
 	
-	public void stopBlinking() {
+	@Override
+	public void stop() {
 		if (blinkTimer != null && blinkTimer.isRunning()) {
 			blinkTimer.stop();
 			component.setBackground(Color.WHITE);

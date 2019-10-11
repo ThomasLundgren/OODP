@@ -41,8 +41,7 @@ public class WeekAlarmClock implements AlarmClockType {
 		this(new Time(0, 0, 0, 0), alarm);
 	}
 
-	public WeekAlarmClock() {
-	}
+	public WeekAlarmClock() {}
 
 	@Override
 	public void tickTock() {

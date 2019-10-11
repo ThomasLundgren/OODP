@@ -5,12 +5,13 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import se.hig.thlu.control.ClockController;
-import se.hig.thlu.control.ClockController.AlarmActions;
+import se.hig.thlu.controller.ClockController;
+import se.hig.thlu.controller.ClockController.AlarmActions;
 import se.hig.thlu.model.PropertyChangeBroadcaster;
 import se.hig.thlu.model.alarm.BlinkAlarmAction;
 import se.hig.thlu.model.alarm.SoundAlarmAction;
@@ -32,8 +33,8 @@ class AlarmEntryPanel extends JPanel implements PropertyChangeBroadcaster, Prope
 	private final JLabel hourLabel;
 	private final JLabel minuteLabel;
 	private final JLabel secondLabel;
-	private final GuiBlinkAlarmAction blinkAction;
-	private final GuiSoundAlarmAction soundAction;
+	private final GuiAlarmAction blinkAction;
+	private final GuiAlarmAction soundAction;
 
 	AlarmEntryPanel(List<AlarmActions> actionTypes, TimeType time, ClockController clockController) {
 		this.actionTypes = actionTypes;
@@ -46,7 +47,7 @@ class AlarmEntryPanel extends JPanel implements PropertyChangeBroadcaster, Prope
 		secondLabel = new JLabel(Integer.toString(alarmTime.getSecond()));
 
 		blinkAction = new GuiBlinkAlarmAction(this);
-		soundAction = new GuiSoundAlarmAction(this);
+		soundAction = new GuiSoundAlarmAction();
 
 		setUpComponents();
 	}
@@ -56,26 +57,26 @@ class AlarmEntryPanel extends JPanel implements PropertyChangeBroadcaster, Prope
 		if (propertyChange.getPropertyName() == BlinkAlarmAction.BLINK_ALARM_ACTIVATED) {
 			System.out.println("AlarmEntryPanel reacted to blink alarm activation");
 			if ((boolean) propertyChange.getNewValue() == true) {
-				blinkAction.startBlinking();
-			}
-			if ((boolean) propertyChange.getNewValue() == false) {
-				blinkAction.stopBlinking();
+				blinkAction.start();
+			} else if ((boolean) propertyChange.getNewValue() == false) {
+				blinkAction.stop();
 			}
 		}
 		if (propertyChange.getPropertyName() == SoundAlarmAction.SOUND_ALARM_ACTIVATED) {
 			System.out.println("AlarmEntryPanel reacted to sound alarm activation");
 			if ((boolean) propertyChange.getNewValue() == true) {
-				soundAction.startAlarmSound();
-			}
-			if ((boolean) propertyChange.getNewValue() == false) {
-				soundAction.stopAlarmSound();
+				soundAction.start();
+				setBorder(BorderFactory.createLineBorder(Color.RED));
+			} else if ((boolean) propertyChange.getNewValue() == false) {
+				soundAction.stop();
+				setBorder(BorderFactory.createEmptyBorder());
 			}
 		}
 	}
 
 	void stopAlarmSignals() {
-		blinkAction.stopBlinking();
-		soundAction.stopAlarmSound();
+		blinkAction.stop();
+		soundAction.stop();
 	}
 
 	TimeType getAlarmTime() {
@@ -119,7 +120,7 @@ class AlarmEntryPanel extends JPanel implements PropertyChangeBroadcaster, Prope
 			} else {
 				soundButton.setText("Sound inactive");
 				soundButton.setBackground(Color.RED);
-				soundAction.stopAlarmSound();
+				soundAction.stop();
 				clockController.removeAlarmAction(alarmTime, AlarmActions.SOUND);
 			}
 		});
@@ -131,7 +132,7 @@ class AlarmEntryPanel extends JPanel implements PropertyChangeBroadcaster, Prope
 			} else {
 				blinkButton.setText("Blink inactive");
 				blinkButton.setBackground(Color.RED);
-				blinkAction.stopBlinking();
+				blinkAction.stop();
 				clockController.removeAlarmAction(alarmTime, AlarmActions.BLINKING);
 			}
 		});

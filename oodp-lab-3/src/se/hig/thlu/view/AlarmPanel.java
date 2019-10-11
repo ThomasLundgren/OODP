@@ -48,11 +48,15 @@ public class AlarmPanel extends JPanel implements PropertyChangeListener {
 			}
 			AlarmEntryPanel newAlarmPanel = new AlarmEntryPanel(actionTypes, alarm.getTime(), clockController);
 			newAlarmPanel.addPropertyChangeListener(this);
+			if (alarm.isActive()) {
+				newAlarmPanel.setActiveButton(true);
+			} else {
+				newAlarmPanel.setActiveButton(false);
+			}
 			clockController.addListenerForAlarm(alarm, newAlarmPanel);
 
 			add(newAlarmPanel);
 			alarmEntries.add(newAlarmPanel);
-			System.out.println("Alarm was added and AlarmPanel created and added an AlarmEntry!");
 		}
 		if (propertyChange.getPropertyName() == AlarmEntryPanel.REMOVE_ALARM_ENTRY) {
 			AlarmEntryPanel alarmEntry = (AlarmEntryPanel) propertyChange.getNewValue();
