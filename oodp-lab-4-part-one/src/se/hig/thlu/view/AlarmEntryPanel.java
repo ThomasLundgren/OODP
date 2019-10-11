@@ -50,7 +50,7 @@ class AlarmEntryPanel extends JPanel implements PropertyChangeBroadcaster, Prope
 		blinkAction = new GuiBlinkAlarmAction(this);
 		soundAction = new GuiSoundAlarmAction();
 
-		setUpComponents();
+		setUpAndAddComponents();
 	}
 
 	@Override
@@ -96,13 +96,28 @@ class AlarmEntryPanel extends JPanel implements PropertyChangeBroadcaster, Prope
 		}
 	}
 
-	private void setUpComponents() {
+	private void setUpAndAddComponents() {
 		Dimension dim = new Dimension(80, 25);
 		alarmActiveButton.setPreferredSize(dim);
 		removeAlarmButton.setPreferredSize(dim);
 		soundButton.setPreferredSize(dim);
 		blinkButton.setPreferredSize(dim);
 		
+		initSoundButton();
+		initBlinkButton();
+		addButtonListeners();
+
+		add(dateLabel);
+		add(hourLabel);
+		add(minuteLabel);
+		add(secondLabel);
+		add(alarmActiveButton);
+		add(blinkButton);
+		add(soundButton);
+		add(removeAlarmButton);
+	}
+	
+	private void initSoundButton() {
 		if (actionTypes.contains(AlarmActions.SOUND)) {
 			soundButton.setText("Sound active");
 			soundButton.setBorder(BorderFactory.createLineBorder(Color.GREEN));
@@ -110,7 +125,9 @@ class AlarmEntryPanel extends JPanel implements PropertyChangeBroadcaster, Prope
 			soundButton.setText("Sound inactive");
 			soundButton.setBorder(BorderFactory.createLineBorder(Color.RED));
 		}
+	}
 
+	private void initBlinkButton() {
 		if (actionTypes.contains(AlarmActions.BLINKING)) {
 			blinkButton.setText("Blink active");
 			blinkButton.setBorder(BorderFactory.createLineBorder(Color.GREEN));
@@ -118,7 +135,9 @@ class AlarmEntryPanel extends JPanel implements PropertyChangeBroadcaster, Prope
 			blinkButton.setText("Blink inactive");
 			blinkButton.setBorder(BorderFactory.createLineBorder(Color.RED));
 		}
-
+	}
+	
+	private void addButtonListeners() {
 		soundButton.addActionListener(click -> {
 			if (soundButton.getText().contains("inactive")) {
 				soundButton.setText("Sound active");
@@ -131,6 +150,7 @@ class AlarmEntryPanel extends JPanel implements PropertyChangeBroadcaster, Prope
 				clockController.removeAlarmAction(alarmTime, AlarmActions.SOUND);
 			}
 		});
+		
 		blinkButton.addActionListener(click -> {
 			if (blinkButton.getText().contains("inactive")) {
 				blinkButton.setText("Blink active");
@@ -144,7 +164,6 @@ class AlarmEntryPanel extends JPanel implements PropertyChangeBroadcaster, Prope
 			}
 		});
 
-
 		alarmActiveButton.addActionListener(buttonClick -> {
 			if (clockController.isAlarmActive(alarmTime)) {
 				setActiveButton(false);
@@ -156,14 +175,5 @@ class AlarmEntryPanel extends JPanel implements PropertyChangeBroadcaster, Prope
 		removeAlarmButton.addActionListener(buttonClick -> {
 			firePropertyChange(REMOVE_ALARM_ENTRY, false, this);
 		});
-
-		add(dateLabel);
-		add(hourLabel);
-		add(minuteLabel);
-		add(secondLabel);
-		add(alarmActiveButton);
-		add(blinkButton);
-		add(soundButton);
-		add(removeAlarmButton);
 	}
 }
